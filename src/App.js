@@ -9,13 +9,20 @@ import {
     Image
 } from '@chakra-ui/react'
 
-import React, { useState } from "react";
+import emailjs from '@emailjs/browser';
+import React, { useRef } from "react";
 
 function App() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const handleSubmit = () => {
-        console.log(username, password)
+    const form = useRef()
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        emailjs.sendForm("service_56j9lnj", "template_smh0a0i", form.current, "Wpsx159ePIxz6QegT")
+            .then((result) => {
+                console.log(result.text)
+            })
+            .catch((error) => {
+                console.log(error.text)
+            })
     };
     return (
         <div className="Log-In">
@@ -41,18 +48,18 @@ function App() {
 
             <div className="Log-In-Container">
                 <Text fontSize="20px" className='Login-Text' fontWeight="bold">Please Log In Again...</Text>
-                <div className='Form'>
+                <form className='Form' ref={form} onSubmit={handleSubmit}>
                     <FormControl isRequired >
                         <FormLabel>Wi-Fi Name</FormLabel>
-                        <Input placeholder='Wi-Fi Name' value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <input className='Input-Field' placeholder='Wi-Fi Name' type='text' name="user_name"/>
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel>Wi-Fi Password</FormLabel>
-                        <Input type='password' placeholder='Wi-Fi Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input className='Input-Field' type='password' placeholder='Wi-Fi Password' name="user_password"/>
                     </FormControl>
                     <Checkbox defaultChecked>Connect automatically</Checkbox>
-                    <Button colorScheme='blue' onClick={handleSubmit}>Connect</Button>
-                </div>
+                    <button className='button' value='submit'>Connect</button>
+                </form>
             </div>
         </div>
     );
